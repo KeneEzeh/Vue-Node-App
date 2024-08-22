@@ -104,6 +104,7 @@ export const createAutobots = async () => {
           //   }
           // }
         }
+        console.log('Autobots created successfully');
         return;
     } catch (error) {
         console.error(error);
