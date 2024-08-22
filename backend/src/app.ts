@@ -1,36 +1,30 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { RateLimiterMemory } from 'rate-limiter-flexible';
+import dotenv from 'dotenv';
+dotenv.config();
+import express, { Request, Response } from 'express';
 import cron from 'node-cron';
 import { createAutobots } from './controller';
 import appRouter from './routes';
 import cors from 'cors';
+import { rateLimiterMiddleware } from './middleware';
+import swaggerDocs from './swagger';
+
 
 const app = express();
 app.use(cors());
 
-interface UserRequest extends Request {
-  ip: string;
-} 
-const limiter = new RateLimiterMemory({
-  points: 5,
-  duration: 60,
-});
+export const port = process.env.PORT ?? 5000;
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    const userRequest = req as UserRequest;
-  limiter.consume(userRequest.ip)
-    .then(() => next())
-    .catch(() => res.status(429).json({message:'Too Many Requests, Please try again later'}));
-});
-
-app.use('/', (req: Request, res: Response) => {
-    res.send('Welcome to the TweetAI backend, feel free to checkout the endpoints!');
-});
-
+swaggerDocs(app, port);
+// app.use(rateLimiterMiddleware);
 app.use('/api',appRouter);
 
+app.use('/', (req: Request, res: Response) => {
+    return res.status(200).json({message: 'Welcome to the TweetAI backend, feel free to checkout the endpoints!'});
+});
 
-cron.schedule('0 * * * *', createAutobots);
+
+
+// cron.schedule('0 * * * *', createAutobots);
 
 // app.listen(3000, () => console.log('Server running on port 3000'));
 
