@@ -11,7 +11,7 @@ router.post('/create-autobots',createAutobots);
  * /get-all-autobots:
  *   get:
  *     summary: Get all Autobots
- *     tags: [Autobots]
+ *     tags: [Endpoints]
  *     responses:
  *       200:
  *         description: List of all Autobots.
@@ -38,8 +38,8 @@ router.get('/get-all-autobots',getAutobots);
  * @swagger
  * /get-count:
  *   get:
- *     summary: Get comments of a post
- *     tags: [Autobots]
+ *     summary: Get total count of Autobots
+ *     tags: [Endpoints]
  *     parameters:
  *       - in: path
  *         name: postId
@@ -49,7 +49,7 @@ router.get('/get-all-autobots',getAutobots);
  *         description: Post ID
  *     responses:
  *       200:
- *         description: List of comments for a specific post.
+ *         description: Count of Autobots.
  *         content:
  *           application/json:
  *             schema:
@@ -65,10 +65,10 @@ router.get('/get-count',getAutobotCount);
 
 /**
  * @swagger
- * /get-autobot/{id}:
+ * /get-bot-posts/{id}:
  *   get:
  *     summary: Get posts of an Autobot
- *     tags: [Autobots]
+ *     tags: [Endpoints]
  *     parameters:
  *       - in: path
  *         name: id
@@ -97,15 +97,15 @@ router.get('/get-count',getAutobotCount);
  *       500:
  *         description: Internal Server Error.
  */
-router.get('/get-autobot/:id',getPosts);
+router.get('/get-bot-posts/:id',getPosts);
 
 
 /**
  * @swagger
- * /get-post/{postId}:
+ * /get-post-comments/{postId}:
  *   get:
  *     summary: Get comments of a post
- *     tags: [Autobots]
+ *     tags: [Endpoints]
  *     parameters:
  *       - in: path
  *         name: postId
@@ -133,6 +133,6 @@ router.get('/get-autobot/:id',getPosts);
  *       500:
  *         description: Server error.
  */
-router.get('/get-post/:id',getComments);
+router.get('/get-post-comments/:postId',getComments);
 
 export default router;

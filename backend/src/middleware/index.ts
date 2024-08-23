@@ -12,7 +12,6 @@ interface UserRequest extends Request {
 
 export const rateLimiterMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const userRequest = req as UserRequest;
-    console.log("IP...", userRequest.ip);
     limiter.consume(userRequest.ip)
       .then(() => next())
       .catch(() => res.status(429).json({ message: 'Too Many Requests, Please try again later' }));

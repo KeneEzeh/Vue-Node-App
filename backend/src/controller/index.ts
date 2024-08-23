@@ -6,56 +6,35 @@ import { Request, Response } from "express";
 
 export const createAutobots = async () => {
     try {
-    
-        // for (let i = 0; i < 500; i++) {
-        //   const userResponse = await axios.get('https://jsonplaceholder.typicode.com/users');
-
-        //   if (!userResponse.data) {
-        //     return;
-        //   }
-        //   const userData = userResponse.data[i % userResponse.data.length];
-        //   const newAutobot = await Autobot.create({
-        //     name: userData.name,
-        //     username: userData.username,
-        //     email: userData.email,
-        //     phone: userData.phone,
-        //   });
-      
-        //   for (let j = 0; j < 10; j++) {
-        //     const postResponse = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        //     const postData = postResponse.data[j % postResponse.data.length];
-        //     const newPost = await Post.create({
-        //       title: `${postData.title} - ${i}-${j}`,
-        //       body: postData.body,
-        //       AutobotId: newAutobot.id,
-        //     });
-      
-        //     for (let k = 0; k < 10; k++) {
-        //       const commentResponse = await axios.get('https://jsonplaceholder.typicode.com/comments');
-        //       const commentData = commentResponse.data[k % commentResponse.data.length];
-        //       await Comment.create({
-        //         body: commentData.body,
-        //         PostId: newPost.id,
-        //       });
-        //     }
-        //   }
-        // }
         const uniqueUsernames = new Set();
-        const uniquePostTitles = new Set();
+        const usedPostTitles = new Set();
+
+        // TO AVOID MAKING MULTIPLE CALLS TO THIS ENDPOINTS, I FETCHED ALL THE DATA AT ONCE
+        const [userResponse, postResponse, commentResponse] = await Promise.all([
+          axios.get('https://jsonplaceholder.typicode.com/users'),
+          axios.get('https://jsonplaceholder.typicode.com/posts'),
+          axios.get('https://jsonplaceholder.typicode.com/comments')
+        ]);
+
+        const users = userResponse.data;
+        const posts = postResponse.data;
+        const comments = commentResponse.data;
+
+        const autobotsData = [];
+        const postsData = [];
+        const commentsData = [];
 
         for (let i = 0; i < 500; i++) {
           let userData;
           do {
-            const userResponse = await axios.get('https://jsonplaceholder.typicode.com/users');
-            const randomUserIndex = Math.floor(Math.random() * userResponse.data.length);
-            const randomUser = userResponse.data[randomUserIndex];
+            const randomUserIndex = Math.floor(Math.random() * users.length);
+            const randomUser = users[randomUserIndex];
 
-            // SINCE THE 'https://jsonplaceholder.typicode.com/users' API ONLY RETURNS 10 USERS
-            // AND THE TASK REQUIRES THE 500 AUTOBOTS(USERS) TO BE UNIQUE, I IMPLEMENTED THIS TO ENSURE
-            // THAT THE AUTOBOTS HAVE UNIQUE USERNAMES AND EMAILS
-            
-            const modifiedUsername = `${randomUser.username}${Math.floor(Math.random() * 100)}`;
-            const modifiedEmail = `${randomUser.email.split('@')[0]}${Math.floor(Math.random() * 100)}@${randomUser.email.split('@')[1]}`;
+          // SINCE THE 'https://jsonplaceholder.typicode.com/users' API ONLY RETURNS 10 USERS
+          // AND THE TASK REQUIRES THE 500 AUTOBOTS(USERS) TO BE UNIQUE, I IMPLEMENTED THIS TO ENSURE
+          // THAT THE AUTOBOTS HAVE UNIQUE USERNAMES AND EMAILS
+            const modifiedUsername = `${randomUser.username}${Math.floor(Math.random() * 10000)}`;
+            const modifiedEmail = `${randomUser.email.split('@')[0]}${Math.floor(Math.random() * 10000)}@${randomUser.email.split('@')[1]}`;
             userData = {
               name: randomUser.name,
               username: modifiedUsername,
@@ -66,52 +45,68 @@ export const createAutobots = async () => {
 
           uniqueUsernames.add(userData.username);
 
-          const newAutobot = await Autobot.create({
+          autobotsData.push({
             name: userData.name,
             username: userData.username,
             email: userData.email,
-            phone: userData.phone
+            phone: userData.phone,
           });
 
           // This creates 10 new posts for the Autobot
-          // for (let j = 0; j < 10; j++) {
-          //   let postDetails;
-          //   do {
-          //     const postResponse = await axios.get('https://jsonplaceholder.typicode.com/posts');
-          //     const randomPostIndex = Math.floor(Math.random() * postResponse.data.length);
-          //     postDetails = {
-          //       title: postResponse.data[randomPostIndex].title,
-          //       body: postResponse.data[randomPostIndex].body,
-          //       AutobotId: newAutobot.id,
-          //     }
+          for (let j = 0; j < 10; j++) {
+            let postTitle;
+            do {
+              const randomPostIndex = Math.floor(Math.random() * posts.length);
+              const randomPost = posts[randomPostIndex];
+              postTitle = `${randomPost.title} ${Math.floor(Math.random() * 10000)}`;
+            } while (usedPostTitles.has(postTitle));
 
-          //   } while (uniquePostTitles.has(postDetails.title));
+            usedPostTitles.add(postTitle);
 
-          //   uniquePostTitles.add(postDetails.title);
+            const newPost = {
+              title: postTitle,
+              body: posts[Math.floor(Math.random() * posts.length)].body,
+              AutobotId: i + 1, // Placeholder for autobot ID to be set after bulk insert
+            };
 
-          //   const newPost = await Post.create(postDetails);
+            postsData.push(newPost);
 
-          //   // This creates 10 new comments for the post
-          //   for (let k = 0; k < 10; k++) {
-          //     const commentResponse = await axios.get('https://jsonplaceholder.typicode.com/comments');
-          //     const randomCommentIndex = Math.floor(Math.random() * commentResponse.data.length);
-          //     const randomComment = commentResponse.data[randomCommentIndex];
+            // This creates 10 new comments for the post
+            for (let k = 0; k < 10; k++) {
+              const randomCommentIndex = Math.floor(Math.random() * comments.length);
+              const randomComment = comments[randomCommentIndex];
 
-          //     await Comment.create({
-          //       body: randomComment.body,
-          //       PostId: newPost.id,
-          //     });
-          //   }
-          // }
+              commentsData.push({
+                body: randomComment.body,
+                PostId: postsData.length, // Placeholder for post ID to be set after bulk insert
+              });
+            }
+          }
         }
+
+        // TO REDUCE THE TIME TAKEN TO INSERT THE DATA, I USED BULK INSERT
+        const newAutobots = await Autobot.bulkCreate(autobotsData);
+
+        postsData.forEach((post, index) => {
+          post.AutobotId = newAutobots[Math.floor(index / 10)].id;
+        });
+
+        const newPosts = await Post.bulkCreate(postsData);
+
+        commentsData.forEach((comment, index) => {
+          comment.PostId = newPosts[Math.floor(index / 10)].id;
+        });
+
+        await Comment.bulkCreate(commentsData);
+
         console.log('Autobots created successfully');
         return;
     } catch (error) {
         console.error(error);
         return;
     }
-
 };
+
 
 export const getAutobots = async (req: Request, res: Response) => {
     try {
@@ -127,10 +122,11 @@ export const getAutobots = async (req: Request, res: Response) => {
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
-        const posts = await Post.findAll({ where: { AutobotId: req.params.id }, limit: 10 });
+      const { id } = req.params;
+        const posts = await Post.findAll({ where: { AutobotId: id }, limit: 10 });
 
         if (!posts) {
-            return res.status(404).json({ error: 'Posts not found' });
+            return res.status(404).json({ error: 'No post has been made by this user' });
         }
         return res.json(posts);
         
@@ -142,12 +138,13 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getComments = async (req: Request, res: Response) => {
     try {
 
-        const comments = await Comment.findAll({ where: { PostId: req.params.id }, limit: 10 });
+      const { id } = req.params;
+        const comments = await Comment.findAll({ where: { PostId: id }, limit: 10 });
 
         if (!comments) {
-            return res.status(404).json({ error: 'No Comment found' });
+            return res.status(404).json({ error: 'No Comment found for this post' });
         }
-        return res.json(comments);
+        return res.status(200).json(comments);
         
     } catch (error) {
         return res.status(500).json({ error: 'Internal Server Error' });
@@ -157,7 +154,7 @@ export const getComments = async (req: Request, res: Response) => {
 export const getAutobotCount = async (req: Request, res: Response) => {
     try {
         const count = await Autobot.count();
-        return res.json({ count });
+        return res.status(200).json({ count });
         
     } catch (error) {
         return res.status(500).json({ error: 'Internal Server Error' });

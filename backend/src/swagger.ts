@@ -105,7 +105,7 @@ const options = {
   
   const swaggerSpec = swaggerJSDoc(options);
 
-  fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
+//   fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
   
   function swaggerDocs(app: Express, port: any) {
     // Swagger page

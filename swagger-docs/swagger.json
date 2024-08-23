@@ -95,7 +95,7 @@
       "get": {
         "summary": "Get all Autobots",
         "tags": [
-          "Autobots"
+          "Endpoints"
         ],
         "responses": {
           "200": {
@@ -128,9 +128,9 @@
     },
     "/get-count": {
       "get": {
-        "summary": "Get comments of a post",
+        "summary": "Get total count of Autobots",
         "tags": [
-          "Autobots"
+          "Endpoints"
         ],
         "parameters": [
           {
@@ -145,7 +145,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List of comments for a specific post.",
+            "description": "Count of Autobots.",
             "content": {
               "application/json": {
                 "schema": {
@@ -166,11 +166,11 @@
         }
       }
     },
-    "/get-post/{postId}": {
+    "/get-post-comments/{postId}": {
       "get": {
         "summary": "Get comments of a post",
         "tags": [
-          "Autobots"
+          "Endpoints"
         ],
         "parameters": [
           {
@@ -205,6 +205,43 @@
           },
           "404": {
             "description": "No Comment found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/get-bot-posts/{id}": {
+      "get": {
+        "summary": "Get Autobot by ID",
+        "tags": [
+          "Endpoints"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Autobot ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of posts for a specific Autobot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Autobot"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Autobot not found."
           },
           "500": {
             "description": "Server error."

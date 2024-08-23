@@ -11,11 +11,15 @@ import swaggerDocs from './swagger';
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 export const port = process.env.PORT ?? 5000;
 
 swaggerDocs(app, port);
-// app.use(rateLimiterMiddleware);
+
+app.use(rateLimiterMiddleware);
+
 app.use('/api',appRouter);
 
 app.use('/', (req: Request, res: Response) => {
@@ -23,9 +27,8 @@ app.use('/', (req: Request, res: Response) => {
 });
 
 
+// IN OTHER TO CREATE AUTOBOTS EVERY HOUR, I USED THE CRON JOB LIBRARY TO SCHEDULE THE TASK
+cron.schedule('0 * * * *', createAutobots);
 
-// cron.schedule('0 * * * *', createAutobots);
-
-// app.listen(3000, () => console.log('Server running on port 3000'));
 
 export default app;

@@ -7,7 +7,7 @@ import sequelize from "../db";
 const server = createServer(app);
 
 
-sequelize.sync({force:true}).then(() => {
+sequelize.sync({}).then(() => {
 	console.log("Connected to MySql");
     server.listen(port, () => {
         console.log(`Server running on port: ${port} `);

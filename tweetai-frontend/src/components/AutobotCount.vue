@@ -2,28 +2,20 @@
   <header>
     <div class="header-container">
       <h2 class="logo">TweetAI</h2>
-      <h4>A <span>SmartInsight</span> Take-home Assignment</h4>
-      <!-- <div class="header-social">
-        <a href="#" class="social-link">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" class="social-link">
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a href="#" class="social-link">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div> -->
+      <h4>A <span>SmartInsight</span> take-home Assignment</h4>
     </div>
   </header>
   <div class="main-container">
     <section class="hero">
       <h1 class="hero-title">Welcome to TweetAI</h1>
       <p class="hero-text">Designed and programmed by <span>Ezeanwe Kenechukwu</span></p>
-      <button class="hero-btn">Get Started</button>
+      <!-- <button class="hero-btn">Get Started</button> -->
       <div class="hero-illustration">
         <img alt="Vue logo" src="../assets/logo.png">
         <h2>UI Powered with Vue.js</h2>
+        <div class="api">
+          <a href="https://keneezeh.github.io/Vue-Node-App/swagger-docs/">View the API documentation</a>
+        </div>
       </div>
     </section>
     <section class="stats">
@@ -32,32 +24,12 @@
       <p class="stats-text">Autobots created in the last 24 hours</p>
       <div class="stats-graph">
         <svg width="100" height="100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="#3498db" stroke-width="10"></circle>
-          <circle cx="50" cy="50" r="40" fill="none" stroke="#3498db" stroke-width="10" stroke-dasharray="100 100" stroke-dashoffset="50"></circle>
+          <circle cx="50" cy="50" r="50" fill="none" stroke="#3498db" stroke-width="10"></circle>
+          <circle cx="50" cy="50" r="50" fill="none" stroke="#3498db" stroke-width="10" stroke-dasharray="100 100" stroke-dashoffset="50"></circle>
           <text x="50" y="65" font-size="44" font-weight="bold" text-anchor="middle">{{ autobotCount }}</text>
         </svg>
       </div>
     </section>
-    <!-- <section class="features">
-      <h1 class="features-title">Features</h1>
-      <ul class="features-list">
-        <li class="feature">
-          <i class="fas fa-robot"></i>
-          <h2 class="feature-title">AI-powered bot creation</h2>
-          <p class="feature-text">Create Twitter bots with ease using our AI-powered platform</p>
-        </li>
-        <li class="feature">
-          <i class="fas fa-chart-bar"></i>
-          <h2 class="feature-title">Advanced analytics</h2>
-          <p class="feature-text">Track your bot's performance with our advanced analytics tools</p>
-        </li>
-        <li class="feature">
-          <i class="fas fa-lock"></i>
-          <h2 class="feature-title">Secure and reliable</h2>
-          <p class="feature-text">Our platform is built with security and reliability in mind</p>
-        </li>
-      </ul>
-    </section> -->
   </div>
 </template>
 
@@ -76,9 +48,9 @@ export default defineComponent({
   },
   methods: {
     async fetchAutobotCount() {
-      // const response = await fetch('http://localhost:5000/api/get-count');
-      // const autobots = await response.json();
-      // this.autobotCount = autobots.count;
+      const response = await fetch('http://localhost:5000/api/get-count');
+      const autobots = await response.json();
+      this.autobotCount = autobots.count;
     },
   },
 });
@@ -98,16 +70,26 @@ export default defineComponent({
   h4{
     color: #141618;
     font-weight: 800;
-    font-size: large;
+    font-size: 40px;
 
     span{
       color: #eef2f7;
     }
   }
+
+  @media screen and (max-width: 860px) {
+    flex-direction: column;
+    height: auto;
+
+    h4{
+      font-size: 25px;
+    }
+    
+  }
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 44px;
   font-weight: bold;
   color: #fff;
   margin-right: 20px;
@@ -142,8 +124,20 @@ export default defineComponent({
 
   span{
     color: #141618;
-    font-size: large;
-    font-weight: 600;
+    font-size: larger;
+    font-weight: 800;
+  }
+}
+.api {
+  text-decoration: none;
+  background: #b4c2e9;
+  padding: 10px;
+  border-radius: 10px;
+
+  a{
+    text-decoration: none;
+    color: #141618;
+    font-size: 30px;
   }
 }
 
