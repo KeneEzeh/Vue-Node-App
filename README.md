@@ -36,7 +36,7 @@ yarn
 
 ### Project Environment Variables
 
-Copy the sample environment file in the "backend" directory and modify it with your environment variables:
+Copy the sample environment file in both the "backend" and "tweet-ai" root directories and modify them with your environment variables:
 
 ```bash
 cp .env.sample .env.local

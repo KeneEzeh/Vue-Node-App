@@ -165,6 +165,7 @@ export const getAutobotCount = async (req: Request, res: Response) => {
       const recentAutobotsCount = allAutobots.filter(
           (autobot) => autobot.createdAt >= time
       ).length;
+      console.log(recentAutobotsCount);
 
       return res.status(200).json({ count: totalCount, recentAutobots: recentAutobotsCount });
   } catch (error) {

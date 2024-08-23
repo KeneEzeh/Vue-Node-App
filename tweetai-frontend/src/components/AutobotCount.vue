@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import axios from "../api/axios";
 
 export default defineComponent({
   data() {
@@ -48,13 +49,14 @@ export default defineComponent({
     setInterval(this.fetchAutobotCount, 60000);
   },
   methods: {
-    async fetchAutobotCount() {
-      const response = await fetch('http://localhost:5000/api/get-count');
-      const autobots = await response.json();
-      this.autobotCount = autobots.count;
-      this.recentAutobotCount = autobots.recentAutobots;
-    },
+  async fetchAutobotCount() {
+    console.log("Here...");
+    const response = await axios.get('/api/get-count');
+    const autobots = await response.data;
+    this.autobotCount = autobots.count;
+    this.recentAutobotCount = autobots.recentAutobots;
   },
+},
 });
 </script>
 
