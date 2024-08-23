@@ -1,5 +1,8 @@
 # Vue-Node-App
-A simple application built using Vue.js for frontend and Node for backend
+A simple application built using Vue.js for frontend and Node for backend.
+
+# NOTE: TypeScript
+I used TypeScript for both the backend and frontend so you need knowledge of TypeScript to test this out.
 
 ## Installation
 
@@ -65,4 +68,6 @@ yarn build
 
 ### API Endpoints
 
-Explore the API endpoints locally using  the Swagger documentation link in "swagger.ts" file.
+Explore the API endpoints locally using  the Swagger documentation link in "backend/swagger.ts" file.
+
+The data return by these APIs
