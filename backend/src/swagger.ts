@@ -2,6 +2,7 @@ import { Express, Request, Response} from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import packageJson from '../package.json';
+import fs from 'fs';
 
 
 const options = {
@@ -103,6 +104,8 @@ const options = {
   };
   
   const swaggerSpec = swaggerJSDoc(options);
+
+  fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
   
   function swaggerDocs(app: Express, port: any) {
     // Swagger page
