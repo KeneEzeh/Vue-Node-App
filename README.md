@@ -73,6 +73,6 @@ Explore the API endpoints locally using  the Swagger documentation link [here](h
 ### Database - MySql
 Sequelize - Configure the sequelize connection to the database by providing the details in the "backend/.env.sample" file.
 
-Note: Create a ".env" file in the backend directory, copy the variables in the ".env.sample" into it and provide the necessary variables for the mySql database.
+#### Note: Create a ".env" file in the backend directory, copy the variables in the ".env.sample" into it and provide the necessary variables for the mySql database.
 
 
