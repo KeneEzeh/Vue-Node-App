@@ -1,7 +1,7 @@
 # Vue-Node-App
 A simple application built using Vue.js for frontend and Node for backend.
 
-# NOTE: TypeScript
+## NOTE: TypeScript
 I used TypeScript for both the backend and frontend so you need knowledge of TypeScript to test this out.
 
 ## Installation
@@ -68,6 +68,11 @@ yarn build
 
 ### API Endpoints
 
-Explore the API endpoints locally using  the Swagger documentation link in "backend/swagger.ts" file.
+Explore the API endpoints locally using  the Swagger documentation link in the "backend/swagger.ts" file.
 
-The data return by these APIs
+### Database - MySql
+Sequelize - Configure the sequelize connection to the database by providing the details in the "backend/.env.sample" file.
+
+Note: Create a ".env" file in the backend directory, copy the variables in the ".env.sample" into it and provide the necessary variables for the mySql database.
+
+
