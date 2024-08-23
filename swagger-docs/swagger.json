@@ -154,7 +154,8 @@
                     "type": "object"
                   },
                   "example": {
-                    "count": 507
+                    "count": 507,
+                    "recentAutobots": 10
                   }
                 }
               }

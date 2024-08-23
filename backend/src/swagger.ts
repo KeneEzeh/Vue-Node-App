@@ -105,19 +105,20 @@ const options = {
   
   const swaggerSpec = swaggerJSDoc(options);
 
+//   UNCOMMENT THIS TO GENERATE A SWAGGER.JSON FILE
 //   fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
   
   function swaggerDocs(app: Express, port: any) {
-    // Swagger page
+    // SWAGGER DOCS ROUTE
     app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   
-    // Docs in JSON format
+    // THE DOCS.JSON FILE IS GENERATED AND CAN BE ACCESSED VIA THE /DOCS.JSON ROUTE
     app.get("/docs.json", (req: Request, res: Response) => {
       res.setHeader("Content-Type", "application/json");
       res.send(swaggerSpec);
     });
   
-    console.log(`Docs available at http://localhost:${port}/docs`);
+    console.log(`Docs available locally at http://localhost:${port}/docs`);
   }
   
   export default swaggerDocs;

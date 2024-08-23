@@ -3,6 +3,7 @@ import Autobot from '../models/autobot';
 import Post from '../models/post';
 import Comment from '../models/comment';
 import { Request, Response } from "express";
+import { Op } from 'sequelize';
 
 export const createAutobots = async () => {
     try {
@@ -152,11 +153,22 @@ export const getComments = async (req: Request, res: Response) => {
 };
 
 export const getAutobotCount = async (req: Request, res: Response) => {
-    try {
-        const count = await Autobot.count();
-        return res.status(200).json({ count });
-        
-    } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
+  try {
+      const time = new Date();
+      time.setHours(time.getHours() - 24);
+
+      const allAutobots = await Autobot.findAll({
+          attributes: ['createdAt'],
+      });
+
+      const totalCount = allAutobots.length;
+      const recentAutobotsCount = allAutobots.filter(
+          (autobot) => autobot.createdAt >= time
+      ).length;
+
+      return res.status(200).json({ count: totalCount, recentAutobots: recentAutobotsCount });
+  } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+

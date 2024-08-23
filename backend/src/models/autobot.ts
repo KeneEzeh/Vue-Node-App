@@ -6,6 +6,8 @@ class Autobot extends Model {
   public name!: string;
   public username!: string;
   public email!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 }
 
 Autobot.init({

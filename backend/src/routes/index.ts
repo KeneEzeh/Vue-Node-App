@@ -58,6 +58,7 @@ router.get('/get-all-autobots',getAutobots);
  *                 type: object
  *               example:
  *                count: 507
+ *                recentAutobots: 10
  *       500:
  *         description: Internal Server Error.
  */

@@ -10,6 +10,7 @@ interface UserRequest extends Request {
     duration: 60,
   });
 
+  // HERE I AM USING THE RATE LIMITER FLEXIBLE LIBRARY TO LIMIT THE NUMBER OF REQUESTS A USER CAN MAKE TO THE API
 export const rateLimiterMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const userRequest = req as UserRequest;
     limiter.consume(userRequest.ip)

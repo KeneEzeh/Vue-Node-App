@@ -26,7 +26,7 @@
         <svg width="100" height="100">
           <circle cx="50" cy="50" r="50" fill="none" stroke="#3498db" stroke-width="10"></circle>
           <circle cx="50" cy="50" r="50" fill="none" stroke="#3498db" stroke-width="10" stroke-dasharray="100 100" stroke-dashoffset="50"></circle>
-          <text x="50" y="65" font-size="44" font-weight="bold" text-anchor="middle">{{ autobotCount }}</text>
+          <text x="50" y="60" font-size="30" font-weight="bold" text-anchor="middle">{{ recentAutobotCount }}</text>
         </svg>
       </div>
     </section>
@@ -40,6 +40,7 @@ export default defineComponent({
   data() {
     return {
       autobotCount: 0,
+      recentAutobotCount: 0,
     };
   },
   mounted() {
@@ -51,6 +52,7 @@ export default defineComponent({
       const response = await fetch('http://localhost:5000/api/get-count');
       const autobots = await response.json();
       this.autobotCount = autobots.count;
+      this.recentAutobotCount = autobots.recentAutobots;
     },
   },
 });
