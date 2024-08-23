@@ -68,7 +68,7 @@ yarn build
 
 ### API Endpoints
 
-Explore the API endpoints locally using  the Swagger documentation link in the "backend/swagger.ts" file.
+Explore the API endpoints locally using  the Swagger documentation link [here](https://keneezeh.github.io/Vue-Node-App/swagger-docs/).
 
 ### Database - MySql
 Sequelize - Configure the sequelize connection to the database by providing the details in the "backend/.env.sample" file.
